@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import Greeter from "./components/Greeter";
 import Keycloak from "keycloak-js";
 import TopNavBar from "./components/TopNavBar";
+import GroupsCard from "./components/GroupsCard";
+import TopicsCard from "./components/TopicsCard";
+import RealmRolesCard from "./components/RealmRolesCard";
+import WelcomeCard from "./components/WelcomeCard";
 
 function App() {
   const [keycloak, setKeycloak] = useState(null);
@@ -58,75 +61,14 @@ function App() {
 
       {/* Main Dashboard Content */}
       <main className="dashboard-container">
-        {/* Welcome Card */}
-        <section className="card welcome-card">
-          <Greeter realm={keycloak.realm} />
-        </section>
+        <WelcomeCard realm={keycloak.realm} />
 
         <div className="grid-layout">
-          {/* Groups Card */}
-          <section className="card">
-            <div className="card-header">
-              <h2>My Groups</h2>
-              <span className="badge">{userGroups.length}</span>
-            </div>
-            <div className="card-body">
-              {userGroups.length > 0 ? (
-                <ul className="tag-list">
-                  {userGroups.map((group, index) => (
-                    <li key={index} className="tag group-tag">
-                      {group}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="empty-state">No groups assigned</p>
-              )}
-            </div>
-          </section>
+          <GroupsCard userGroups={userGroups} />
 
-          {/* MQTT Topics Card */}
-          <section className="card">
-            <div className="card-header">
-              <h2>Allowed MQTT Topics</h2>
-              <span className="badge">{allowedTopics.length}</span>
-            </div>
-            <div className="card-body">
-              {allowedTopics.length > 0 ? (
-                <ul className="topic-list">
-                  {allowedTopics.map((topic, index) => (
-                    <li key={index} className="topic-item">
-                      <span className="topic-icon">📡</span>
-                      {topic}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="empty-state">No topics assigned</p>
-              )}
-            </div>
-          </section>
+          <TopicsCard allowedTopics={allowedTopics} />
 
-          {/* Groups Card */}
-          <section className="card">
-            <div className="card-header">
-              <h2>My Realm Roles</h2>
-              <span className="badge">{realmRoles.length}</span>
-            </div>
-            <div className="card-body">
-              {realmRoles.length > 0 ? (
-                <ul className="tag-list">
-                  {realmRoles.map((role, index) => (
-                    <li key={index} className="tag group-tag">
-                      {role}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="empty-state">No realm roles assigned</p>
-              )}
-            </div>
-          </section>
+          <RealmRolesCard realmRoles={realmRoles} />
         </div>
       </main>
     </div>
