@@ -39,6 +39,22 @@ function App() {
 
         const roles = kc.tokenParsed?.realm_access?.roles || [];
         setRealmRoles(roles);
+
+        // Token refresh setup
+        const refreshInterval = setInterval(() => {
+          kc.updateToken(30)
+            .then((refreshed) => {
+              if (refreshed) {
+                console.log("Token refreshed:", new Date());
+              }
+            })
+            .catch(() => {
+              console.log("Token refresh failed, forcing logout");
+              kc.logout();
+            });
+        }, 10000);
+
+        return () => clearInterval(refreshInterval); // cleanup
       }
     });
   }, []);
